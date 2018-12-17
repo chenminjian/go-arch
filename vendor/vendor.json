@@ -41,6 +41,14 @@
 			"versionExact": "v1.3.0"
 		},
 		{
+			"checksumSHA1": "yg01DVQJjQgMeXf9C7Fpl2Yo5+Y=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "72cd26f257d44c1114970e19afddcd812016007e",
+			"revisionTime": "2018-11-14T12:08:49Z",
+			"version": "v1.4.1",
+			"versionExact": "v1.4.1"
+		},
+		{
 			"checksumSHA1": "Y2MOwzNZfl4NRNDbLCZa6sgx7O0=",
 			"path": "github.com/golang/protobuf/proto",
 			"revision": "1d3f30b51784bec5aad268e59fd3c2fc1c2fe73f",
@@ -81,6 +89,10 @@
 			"path": "golang.org/x/sys/unix",
 			"revision": "4d1cda033e0619309c606fc686de3adcf599539e",
 			"revisionTime": "2018-12-13T07:38:38Z"
+		},
+		{
+			"path": "google.golang.org/appengine/cloudsql",
+			"revision": ""
 		},
 		{
 			"checksumSHA1": "P/k5ZGf0lEBgpKgkwy++F7K1PSg=",
