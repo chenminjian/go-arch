@@ -14,7 +14,7 @@ func main() {
 }
 
 func execute() error {
-	db, err := db.New()
+	db, err := db.New(&db.Default)
 	if err != nil {
 		return err
 	}

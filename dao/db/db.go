@@ -14,8 +14,8 @@ type DB struct {
 	stmts map[string]*sql.Stmt
 }
 
-func New() (*DB, error) {
-	sqlDB, err := initDB()
+func New(conf *Conf) (*DB, error) {
+	sqlDB, err := initDB(conf)
 	if err != nil {
 		return nil, err
 	}
@@ -27,14 +27,8 @@ func New() (*DB, error) {
 	return db, nil
 }
 
-func initDB() (*sql.DB, error) {
-	dbHost := "localhost"
-	dbPort := "3306"
-	dbUsername := "root"
-	dbPassword := "root"
-	dbName := "staff"
-
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true", dbUsername, dbPassword, dbHost, dbPort, dbName)
+func initDB(conf *Conf) (*sql.DB, error) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true", conf.Username, conf.Password, conf.Host, conf.Port, conf.Name)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
