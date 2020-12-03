@@ -77,3 +77,35 @@ func (api *Api) UserAdd(c *gin.Context) {
 		"message": "",
 	})
 }
+
+func (api *Api) UserRemove(c *gin.Context) {
+	execute := func() error {
+		idStr := c.Query("id")
+		id, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil {
+			return err
+		}
+
+		err = api.userSrv.Remove(id)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	err := execute()
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "",
+	})
+}

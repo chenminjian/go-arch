@@ -22,3 +22,7 @@ func (im *impl) GetByID(ID int64) (*entity.User, error) {
 func (im *impl) Add(user *entity.User) error{
 	return im.UserDao.Add(user)
 }
+
+func (im *impl) Remove(id int64) error  {
+	return im.UserDao.Remove(id)
+}

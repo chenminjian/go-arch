@@ -53,3 +53,18 @@ func (im *impl) Add(user *entity.User) error {
 
 	return nil
 }
+
+func (im *impl) Remove(id int64) error {
+	sqlstr := fmt.Sprintf("DELETE FROM %s WHERE id = ?", im.TableName())
+	stmt, err := im.db.Prepare(sqlstr)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
