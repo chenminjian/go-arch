@@ -28,6 +28,7 @@ func New(userSrv usersrv.Service) *Api {
 }
 
 func (api *Api) init() {
+	api.router.POST("/user/add", api.UserAdd)
 	api.router.GET("/user/detail", api.UserDetail)
 }
 

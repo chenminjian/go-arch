@@ -18,3 +18,7 @@ func New(userDao userdao.Dao) Service {
 func (im *impl) GetByID(ID int64) (*entity.User, error) {
 	return im.UserDao.GetByID(ID)
 }
+
+func (im *impl) Add(user *entity.User) error{
+	return im.UserDao.Add(user)
+}

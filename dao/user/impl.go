@@ -38,3 +38,18 @@ func (im *impl) GetByID(ID int64) (*entity.User, error) {
 
 	return &user, nil
 }
+
+func (im *impl) Add(user *entity.User) error {
+	sqlstr := fmt.Sprintf("INSERT INTO %s (username) VALUES (?)", im.TableName())
+	stmt, err := im.db.Prepare(sqlstr)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(user.Username)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

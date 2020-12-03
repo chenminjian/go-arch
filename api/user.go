@@ -1,6 +1,8 @@
 package api
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -37,5 +39,41 @@ func (api *Api) UserDetail(c *gin.Context) {
 		"code":    0,
 		"message": "",
 		"data":    user,
+	})
+}
+
+func (api *Api) UserAdd(c *gin.Context) {
+	execute := func() error {
+		var user entity.User
+		err := c.BindJSON(&user)
+		if err != nil {
+			return err
+		}
+
+		if user.Username == "" {
+			return errors.New("username is empty")
+		}
+
+		err = api.userSrv.Add(&entity.User{Username:user.Username})
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	err := execute()
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "",
 	})
 }
