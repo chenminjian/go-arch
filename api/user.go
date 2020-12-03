@@ -109,3 +109,29 @@ func (api *Api) UserRemove(c *gin.Context) {
 		"message": "",
 	})
 }
+
+func (api *Api) UserList(c *gin.Context) {
+	execute := func() ([]*entity.User, error) {
+		users, err := api.userSrv.List()
+		if err != nil {
+			return nil, err
+		}
+
+		return users, nil
+	}
+
+	users, err := execute()
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    -1,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"message": "",
+		"data":    users,
+	})
+}

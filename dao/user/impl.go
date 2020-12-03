@@ -22,7 +22,6 @@ func (im *impl) TableName() string {
 }
 
 func (im *impl) GetByID(ID int64) (*entity.User, error) {
-
 	var user entity.User
 
 	sqlstr := fmt.Sprintf("SELECT id, username FROM %s WHERE id = ?", im.TableName())
@@ -67,4 +66,36 @@ func (im *impl) Remove(id int64) error {
 	}
 
 	return nil
+}
+
+func (im *impl) List()([]*entity.User, error) {
+	sqlStr := fmt.Sprintf("SELECT id, username FROM %s", im.TableName())
+
+	stmt, err := im.db.Prepare(sqlStr)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	items := make([]*entity.User, 0)
+	for rows.Next() {
+		var item entity.User
+		err := rows.Scan(&item.ID, &item.Username)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, &item)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return items, nil
 }

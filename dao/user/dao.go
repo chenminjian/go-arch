@@ -13,4 +13,6 @@ type Dao interface {
 	Add(user *entity.User) error
 
 	Remove(id int64) error
+
+	List()([]*entity.User, error)
 }

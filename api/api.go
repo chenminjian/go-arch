@@ -31,6 +31,7 @@ func (api *Api) init() {
 	api.router.POST("/user/add", api.UserAdd)
 	api.router.GET("/user/detail", api.UserDetail)
 	api.router.DELETE("/user/remove", api.UserRemove)
+	api.router.GET("/user/list", api.UserList)
 }
 
 func (api *Api) Start() error {
