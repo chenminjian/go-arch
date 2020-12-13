@@ -1,17 +1,15 @@
 package userdao
 
 import (
-	"fmt"
-
-	"github.com/chenminjian/go-arch/dao/db"
 	"github.com/chenminjian/go-arch/model/entity"
+	"gorm.io/gorm"
 )
 
 type impl struct {
-	db *db.DB
+	db *gorm.DB
 }
 
-func New(db *db.DB) Dao {
+func New(db *gorm.DB) Dao {
 	return &impl{
 		db: db,
 	}
@@ -21,17 +19,9 @@ func (im *impl) TableName() string {
 	return "user"
 }
 
-func (im *impl) GetByID(ID int64) (*entity.User, error) {
+func (im *impl) GetByID(id int64) (*entity.User, error) {
 	var user entity.User
-
-	sqlstr := fmt.Sprintf("SELECT id, username FROM %s WHERE id = ?", im.TableName())
-	stmt, err := im.db.Prepare(sqlstr)
-	if err != nil {
-		return nil, err
-	}
-
-	err = stmt.QueryRow(ID).Scan(&user.ID, &user.Username)
-	if err != nil {
+	if err := im.db.Table("user").Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, err
 	}
 
@@ -39,14 +29,7 @@ func (im *impl) GetByID(ID int64) (*entity.User, error) {
 }
 
 func (im *impl) Add(user *entity.User) error {
-	sqlstr := fmt.Sprintf("INSERT INTO %s (username) VALUES (?)", im.TableName())
-	stmt, err := im.db.Prepare(sqlstr)
-	if err != nil {
-		return err
-	}
-
-	_, err = stmt.Exec(user.Username)
-	if err != nil {
+	if err := im.db.Table("user").Create(user).Error; err != nil {
 		return err
 	}
 
@@ -54,46 +37,16 @@ func (im *impl) Add(user *entity.User) error {
 }
 
 func (im *impl) Remove(id int64) error {
-	sqlstr := fmt.Sprintf("DELETE FROM %s WHERE id = ?", im.TableName())
-	stmt, err := im.db.Prepare(sqlstr)
-	if err != nil {
-		return err
-	}
-
-	_, err = stmt.Exec(id)
-	if err != nil {
+	if err := im.db.Table("user").Delete(&entity.User{ID: id}).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (im *impl) List()([]*entity.User, error) {
-	sqlStr := fmt.Sprintf("SELECT id, username FROM %s", im.TableName())
-
-	stmt, err := im.db.Prepare(sqlStr)
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
+func (im *impl) List() ([]*entity.User, error) {
 	items := make([]*entity.User, 0)
-	for rows.Next() {
-		var item entity.User
-		err := rows.Scan(&item.ID, &item.Username)
-		if err != nil {
-			return nil, err
-		}
-
-		items = append(items, &item)
-	}
-
-	if err = rows.Err(); err != nil {
+	if err := im.db.Table("user").Find(&items).Error; err != nil {
 		return nil, err
 	}
 

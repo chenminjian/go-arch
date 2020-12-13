@@ -14,10 +14,7 @@ func main() {
 }
 
 func execute() error {
-	db, err := db.New(&db.Default)
-	if err != nil {
-		return err
-	}
+	db:= db.New(&db.Default)
 
 	userDao := userdao.New(db)
 

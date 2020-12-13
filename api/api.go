@@ -28,10 +28,10 @@ func New(userSrv usersrv.Service) *Api {
 }
 
 func (api *Api) init() {
-	api.router.POST("/user/add", api.UserAdd)
-	api.router.GET("/user/detail", api.UserDetail)
-	api.router.DELETE("/user/remove", api.UserRemove)
-	api.router.GET("/user/list", api.UserList)
+	api.router.POST("/user", api.UserAdd)
+	api.router.GET("/user", api.UserDetail)
+	api.router.DELETE("/user", api.UserRemove)
+	api.router.GET("/users", api.UserList)
 }
 
 func (api *Api) Start() error {
