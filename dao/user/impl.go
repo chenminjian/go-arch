@@ -21,7 +21,7 @@ func (im *impl) TableName() string {
 
 func (im *impl) GetByID(id int64) (*entity.User, error) {
 	var user entity.User
-	if err := im.db.Table("user").Where("id = ?", id).First(&user).Error; err != nil {
+	if err := im.db.Table(im.TableName()).Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, err
 	}
 
@@ -29,7 +29,7 @@ func (im *impl) GetByID(id int64) (*entity.User, error) {
 }
 
 func (im *impl) Add(user *entity.User) error {
-	if err := im.db.Table("user").Create(user).Error; err != nil {
+	if err := im.db.Table(im.TableName()).Create(user).Error; err != nil {
 		return err
 	}
 
@@ -37,7 +37,7 @@ func (im *impl) Add(user *entity.User) error {
 }
 
 func (im *impl) Remove(id int64) error {
-	if err := im.db.Table("user").Delete(&entity.User{ID: id}).Error; err != nil {
+	if err := im.db.Table(im.TableName()).Delete(&entity.User{ID: id}).Error; err != nil {
 		return err
 	}
 
@@ -46,7 +46,7 @@ func (im *impl) Remove(id int64) error {
 
 func (im *impl) List() ([]*entity.User, error) {
 	items := make([]*entity.User, 0)
-	if err := im.db.Table("user").Find(&items).Error; err != nil {
+	if err := im.db.Table(im.TableName()).Find(&items).Error; err != nil {
 		return nil, err
 	}
 

@@ -4,6 +4,7 @@ import (
 	"github.com/chenminjian/go-arch/api"
 	"github.com/chenminjian/go-arch/dao/db"
 	"github.com/chenminjian/go-arch/dao/user"
+	"github.com/chenminjian/go-arch/model/entity"
 	"github.com/chenminjian/go-arch/service/user"
 )
 
@@ -15,6 +16,7 @@ func main() {
 
 func execute() error {
 	db:= db.New(&db.Default)
+	db.AutoMigrate(&entity.User{})
 
 	userDao := userdao.New(db)
 
